@@ -3,9 +3,9 @@ module BfHs.Interpreter
       IODevice (..) )
     where 
 
-import BfHs.Language ( 
-    BfProgram,
-     BfAstNode(..) )
+import BfHs.Language 
+    ( BfProgram,
+      BfAstNode(..) )
 
 import BfHs.Tape
     ( Tape(cell),
@@ -15,23 +15,23 @@ import BfHs.Tape
       incrementCell,
       decrementCell )
 
-import Control.Monad (
-     foldM )
+import Control.Monad 
+    ( foldM )
 
 {-|
     Provides a contract that allows the brainfuck interpreter to read and write values from a device or file.
 -}
 data IODevice m a = IODevice { 
-    writeValue :: a -> m (),
-    readValue :: m a
+    writeValue :: a -> m (),    -- ^ Reads a single value from the input stream.
+    readValue :: m a            -- ^ Writes a single value to the output stream.
 }
 
 {-|
     Represents the program execution state.
 -}
 data ProgramState m a = ProgramState {
-    io :: IODevice m a,
-    tape :: Tape a
+    io :: IODevice m a,     -- ^ The device used by the interpreter to interact with the device it is running on.
+    tape :: Tape a          -- ^ The current state of the memory tape.
 }
 
 {-|

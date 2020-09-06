@@ -4,8 +4,14 @@ module BfHs.Language
       parseBrainFuck )
     where
     
-import Text.Parsec.Combinator ( between, sepEndBy )
-import Text.Parsec.Char ( char, spaces )
+import Text.Parsec.Combinator 
+    ( between, 
+      sepEndBy )
+      
+import Text.Parsec.Char 
+    ( char, 
+      spaces )
+
 import Text.ParserCombinators.Parsec
     ( char,
       spaces,

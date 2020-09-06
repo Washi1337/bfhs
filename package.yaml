@@ -1,10 +1,10 @@
 name:                bfhs
 version:             0.1.0.0
-github:              "githubuser/bfhs"
-license:             BSD3
-author:              "Author name here"
-maintainer:          "example@example.com"
-copyright:           "2020 Author name here"
+github:              "Washi1337/bfhs"
+license:             MIT
+author:              "Washi"
+maintainer:          "washi1337@protonmail.com"
+copyright:           "2020 Washi"
 
 extra-source-files:
 - README.md
@@ -27,7 +27,7 @@ library:
   source-dirs: src
 
 executables:
-  bfhs-exe:
+  bfhs:
     main:                Main.hs
     source-dirs:         app
     ghc-options:
