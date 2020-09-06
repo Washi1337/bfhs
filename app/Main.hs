@@ -8,8 +8,8 @@ import Data.Either
 import Data.Char
 
 
-defaultIO :: IOInterface IO Int
-defaultIO = IOInterface (writeToStdOutput) (readFromStdInput)
+defaultIO :: IODevice IO Int
+defaultIO = IODevice (writeToStdOutput) (readFromStdInput)
     where 
         writeToStdOutput x = putChar $ chr x
         readFromStdInput  = do 

@@ -1,6 +1,6 @@
 module BfHs.Interpreter 
     ( eval,
-      IOInterface (..) )
+      IODevice (..) )
     where 
 
 import BfHs.Language ( 
@@ -21,7 +21,7 @@ import Control.Monad (
 {-|
     Provides a contract that allows the brainfuck interpreter to read and write values from a device or file.
 -}
-data IOInterface m a = IOInterface { 
+data IODevice m a = IODevice { 
     writeValue :: a -> m (),
     readValue :: m a
 }
@@ -30,7 +30,7 @@ data IOInterface m a = IOInterface {
     Represents the program execution state.
 -}
 data ProgramState m a = ProgramState {
-    io :: IOInterface m a,
+    io :: IODevice m a,
     tape :: Tape a
 }
 
@@ -46,7 +46,7 @@ transformTape state f = ProgramState (io state) (f $ tape state)
     Evaluates a brainfuck program with the provided initial state and input/output device.
 -}
 eval :: (Monad m, Eq a, Num a, Show a, Read a) 
-     => IOInterface m a     -- ^ The device to use for interacting with the outside world.
+     => IODevice m a     -- ^ The device to use for interacting with the outside world.
      -> Tape a              -- ^ The initial state of the tape.
      -> BfProgram           -- ^ The program to evaluate.
      -> m (Tape a)          -- ^ The final state of the tape.
