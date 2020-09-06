@@ -17,7 +17,6 @@ import BfHs.Transpiler
     ( transpile )
 
 import Data.Either
-    ( fromRight ) 
 
 import Data.Char 
     ( ord, 
@@ -42,8 +41,8 @@ defaultIO = IODevice (writeToStdOutput) (readFromStdInput)
     where 
         writeToStdOutput x = putChar $ chr x
         readFromStdInput  = do 
-            str <- getLine
-            return $ ord $ head str
+            c <- getChar
+            return $ ord $ c
 
 main :: IO ()
 main = do
@@ -67,7 +66,7 @@ mainInteractive = do
     if code == "" then 
         return ()
     else do
-        let program = fromRight [] $ parseBrainFuck code
+        let program = parse code
         evalProgram program
         mainInteractive
 
@@ -75,7 +74,7 @@ mainTranspile :: String -> IO ()
 mainTranspile path = do
     handle <- openFile path ReadMode
     code <- hGetContents handle
-    let program = fromRight [] $ parseBrainFuck code
+    let program = parse code
     putStrLn $ transpile program
     hClose handle
 
@@ -83,7 +82,7 @@ mainEval :: String -> IO ()
 mainEval path = do
     handle <- openFile path ReadMode
     code <- hGetContents handle
-    let program = fromRight [] $ parseBrainFuck code
+    let program = parse code
     evalProgram program
     hClose handle
 
@@ -103,3 +102,11 @@ evalProgram program = do
     resultTape <- eval defaultIO tape program
     putStr "\nResulting tape: "
     putStrLn $ show $ contents $ resultTape
+
+
+parse :: [Char] -> BfProgram
+parse code = unpackParseResult result
+    where
+        result                      = parseBrainFuck code
+        unpackParseResult (Left a)  = error $ show a
+        unpackParseResult (Right a) = a
