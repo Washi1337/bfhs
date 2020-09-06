@@ -7,7 +7,7 @@ module BfHs.Language
 import Text.Parsec.Combinator 
     ( between, 
       sepEndBy )
-      
+
 import Text.Parsec.Char 
     ( char, 
       spaces )
@@ -76,4 +76,6 @@ loopStatement = Loop <$> between (char '[') (char ']') program
     Parses an input string as a brainfuck program.
 -}
 parseBrainFuck :: String -> Either ParseError BfProgram
-parseBrainFuck s = parse program "" s
+parseBrainFuck s = parse program "" (filter isBrainFuckChar s)
+    where 
+        isBrainFuckChar c = c `elem` "><+-.,[]"
