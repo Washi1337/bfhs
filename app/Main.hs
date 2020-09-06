@@ -1,14 +1,36 @@
 module Main where
 
-import BfHs.Language ( parseBrainFuck )
-import BfHs.Tape ( Tape, boundedTape, contents )
-import BfHs.Interpreter ( eval, IODevice(IODevice) )
+import BfHs.Language 
+    ( parseBrainFuck )
+    
+import BfHs.Tape 
+    ( Tape, 
+      boundedTape, 
+      contents )
 
-import Data.Either ( fromRight ) 
-import Data.Char ( ord, chr )
-import System.Environment ( getArgs ) 
+import BfHs.Interpreter
+    ( eval, 
+      IODevice(IODevice) )
+
+import Data.Either
+    ( fromRight ) 
+
+import Data.Char 
+    ( ord, 
+      chr )
+
+import System.Environment 
+    ( getArgs ) 
+
 import System.IO
+    ( stdout,
+      hClose,
+      hFlush,
+      openFile,
+      hGetContents,
+      IOMode(ReadMode) )
 
+tapeSize :: Int
 tapeSize = 100
 
 defaultIO :: IODevice IO Int
