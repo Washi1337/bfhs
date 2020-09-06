@@ -15,7 +15,7 @@ readCellTest :: Test
 readCellTest = TestCase (assertEqual "Should read the current value." test expected)
     where 
         initialState = Tape [3,2,1] 4 [5,6,7]
-        test         = readCell initialState
+        test         = cell initialState
         expected     = 4
 
 writeCellTest :: Test

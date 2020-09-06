@@ -41,6 +41,7 @@ packages:
 #
 # extra-deps: []
 extra-deps:
+- parsec-3.1.14.0
 - HUnit-1.6.0.0
 
 # Override default flag values for local packages and extra-deps
