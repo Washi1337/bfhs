@@ -24,6 +24,12 @@ boundedTape size = Tape left cell right
 writeCell :: Tape a -> a -> Tape a
 writeCell (Tape left _ right) value = Tape left value right
 
+incrementCell :: (Num a) => Tape a -> Tape a
+incrementCell tape = writeCell tape $ (cell tape) + 1
+
+decrementCell :: (Num a) => Tape a -> Tape a
+decrementCell tape = writeCell tape $ (cell tape) - 1
+
 {-|
     Moves the data pointer to the left.
 -}

@@ -20,7 +20,7 @@ import Text.ParserCombinators.Parsec
     The data constructor representing an abstract syntax tree node in a brainfuck program.
 -}
 data BfAstNode 
-    = MoveLeft            -- ^ Moves the data pointer to the left (<).
+    = MoveLeft          -- ^ Moves the data pointer to the left (<).
     | MoveRight         -- ^ Moves the data pointer to the right (>).
     | Increment         -- ^ Increments the value referenced by the data pointer by one (+)
     | Decrement         -- ^ Decrements the value referenced by the data pointer by one (-)

@@ -5,11 +5,22 @@ import BfHs.Tape
 import BfHs.Interpreter
 
 import Data.Either 
+import Data.Char
+
+
+defaultIO :: IOInterface IO Int
+defaultIO = IOInterface (writeToStdOutput) (readFromStdInput)
+    where 
+        writeToStdOutput x = putChar $ chr x
+        readFromStdInput  = do 
+            str <- getLine
+            return $ ord $ head str
 
 main :: IO ()
 main = do
     putStrLn "Code: "
     code <- getLine
-    resultTape <- evalProgram tape (fromRight [] $ parseBrainFuck code)
+    resultTape <- eval defaultIO tape (fromRight [] $ parseBrainFuck code)
     putStrLn $ show resultTape
     where tape = boundedTape 100 :: Tape Int
+
