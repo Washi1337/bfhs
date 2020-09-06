@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: becf3edfca5b6f7f9d753de7df6591118b7a9b66f64d7da7d0e640f947689986
+-- hash: 6810d2dd1b0e810c0326e0be147c074c8e83d8243a1bda8a19302ff0008bb685
 
 name:           bfhs
 version:        0.1.0.0
@@ -53,6 +53,7 @@ test-suite bfhs-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      BfHs.TapeTest
       Paths_bfhs
   hs-source-dirs:
       test
@@ -60,4 +61,5 @@ test-suite bfhs-test
   build-depends:
       base >=4.7 && <5
     , bfhs
+    , HUnit
   default-language: Haskell2010
