@@ -1,5 +1,5 @@
 module BfHs.Language 
-    ( BfAstNode,
+    ( BfAstNode (..),
       BfProgram,
       parseBrainFuck )
     where

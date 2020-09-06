@@ -12,6 +12,12 @@ data Tape a = Tape {
 instance (Eq a) => Eq (Tape a) where
     (Tape l1 c1 r1) == (Tape l2 c2 r2) = (l1 == l2) && (c1 == c2) && (r1 == r2)
 
+boundedTape :: (RealFrac a1, Num a2) => a1 -> Tape a2
+boundedTape size = Tape left cell right
+    where left  = take (floor $ size/2) $ repeat 0
+          cell  = 0
+          right =take (ceiling $ size/2) $ repeat 0
+
 {-|
     Writes a value into the cell on the tape at the current data pointer.
 -}
