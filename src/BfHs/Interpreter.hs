@@ -46,7 +46,7 @@ transformTape state f = ProgramState (io state) (f $ tape state)
     Evaluates a brainfuck program with the provided initial state and input/output device.
 -}
 eval :: (Monad m, Eq a, Num a, Show a, Read a) 
-     => IODevice m a     -- ^ The device to use for interacting with the outside world.
+     => IODevice m a        -- ^ The device to use for interacting with the outside world.
      -> Tape a              -- ^ The initial state of the tape.
      -> BfProgram           -- ^ The program to evaluate.
      -> m (Tape a)          -- ^ The final state of the tape.
@@ -65,7 +65,7 @@ evalProgram :: (Monad m, Eq a, Num a, Show a, Read a)
             -> m (ProgramState m a)         -- ^ The resulting program state.
 evalProgram state program = foldM evalNode state program
 
-{- |
+{-|
     Evaluates a single AST node in a brainfuck program.
 -}
 evalNode :: (Monad m, Eq a, Num a, Show a, Read a) 

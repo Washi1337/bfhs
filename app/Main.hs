@@ -1,12 +1,15 @@
 module Main where
 
-import BfHs.Language
-import BfHs.Tape
-import BfHs.Interpreter
+import BfHs.Language ( parseBrainFuck )
+import BfHs.Tape ( Tape, boundedTape, contents )
+import BfHs.Interpreter ( eval, IODevice(IODevice) )
 
-import Data.Either 
-import Data.Char
+import Data.Either ( fromRight ) 
+import Data.Char ( ord, chr )
+import System.Environment ( getArgs ) 
+import System.IO
 
+tapeSize = 100
 
 defaultIO :: IODevice IO Int
 defaultIO = IODevice (writeToStdOutput) (readFromStdInput)
@@ -18,9 +21,36 @@ defaultIO = IODevice (writeToStdOutput) (readFromStdInput)
 
 main :: IO ()
 main = do
-    putStrLn "Code: "
-    code <- getLine
-    resultTape <- eval defaultIO tape (fromRight [] $ parseBrainFuck code)
-    putStrLn $ show resultTape
-    where tape = boundedTape 100 :: Tape Int
+    args <- getArgs
 
+    if (length args) == 0 then
+        mainInteractive
+    else 
+        mainRunFile args
+
+mainInteractive :: IO ()
+mainInteractive = do 
+    putStr "(fuck) "
+    hFlush stdout
+    code <- getLine
+    if code == "" then 
+        return ()
+    else do
+        evalString code
+        mainInteractive
+
+mainRunFile :: [String] -> IO ()
+mainRunFile args = do
+    handle <- openFile path ReadMode
+    code <- hGetContents handle
+    evalString code
+    hClose handle  
+    where 
+        [path] = args
+
+evalString :: String -> IO ()
+evalString code = do
+    let tape = boundedTape tapeSize :: Tape Int
+    resultTape <- eval defaultIO tape (fromRight [] $ parseBrainFuck code)
+    putStr "\nResulting tape:"
+    putStrLn $ show $ contents $ resultTape
