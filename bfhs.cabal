@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 290cc9b8d36216e879efada2e85cbe4cd6b45f7a968ef1ad90f1ae713801a418
+-- hash: b4195e9ccc22c64d8cc81aa141d5e7f3116e91e6c9123d9244eaa12a25d813d4
 
 name:           bfhs
 version:        0.1.0.0
@@ -15,7 +15,6 @@ author:         Washi
 maintainer:     washi1337@protonmail.com
 copyright:      2020 Washi
 license:        MIT
-license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
     README.md
@@ -30,6 +29,7 @@ library
       BfHs.Interpreter
       BfHs.Language
       BfHs.Tape
+      BfHs.Transpiler
   other-modules:
       Paths_bfhs
   hs-source-dirs:

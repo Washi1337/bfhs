@@ -3,6 +3,10 @@ bfhs
 
 A brainfuck interpreter written in pure Haskell.
 
+Why? 
+----
+Why not?
+
 Setup
 -----
 The project is built upon the Stack toolchain.
@@ -22,9 +26,6 @@ Running a brainfuck script can be done by providing a path to a file.
 bfhs samples/helloworld.b
 ```
 
-Why? 
-----
-Why not?
 
 License
 -------

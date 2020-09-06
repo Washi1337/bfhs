@@ -1,7 +1,8 @@
 module Main where
 
 import BfHs.Language 
-    ( parseBrainFuck )
+    ( parseBrainFuck,
+      BfProgram )
     
 import BfHs.Tape 
     ( Tape, 
@@ -11,6 +12,9 @@ import BfHs.Tape
 import BfHs.Interpreter
     ( eval, 
       IODevice(IODevice) )
+
+import BfHs.Transpiler
+    ( transpile )
 
 import Data.Either
     ( fromRight ) 
@@ -44,11 +48,16 @@ defaultIO = IODevice (writeToStdOutput) (readFromStdInput)
 main :: IO ()
 main = do
     args <- getArgs
+    mainWithArgs args
 
-    if (length args) == 0 then
-        mainInteractive
-    else 
-        mainRunFile args
+mainWithArgs :: [String] -> IO ()
+mainWithArgs []                     = mainInteractive
+mainWithArgs ["--help"]             = mainHelp
+mainWithArgs ["--interactive"]      = mainInteractive
+mainWithArgs ["--transpile", file]  = mainTranspile file
+mainWithArgs ["--eval", file]       = mainEval file
+mainWithArgs [file]                 = mainEval file
+mainWithArgs _                      = mainHelp
 
 mainInteractive :: IO ()
 mainInteractive = do 
@@ -58,21 +67,39 @@ mainInteractive = do
     if code == "" then 
         return ()
     else do
-        evalString code
+        let program = fromRight [] $ parseBrainFuck code
+        evalProgram program
         mainInteractive
 
-mainRunFile :: [String] -> IO ()
-mainRunFile args = do
+mainTranspile :: String -> IO ()
+mainTranspile path = do
     handle <- openFile path ReadMode
     code <- hGetContents handle
-    evalString code
-    hClose handle  
-    where 
-        [path] = args
+    let program = fromRight [] $ parseBrainFuck code
+    putStrLn $ transpile program
+    hClose handle
 
-evalString :: String -> IO ()
-evalString code = do
+mainEval :: String -> IO ()
+mainEval path = do
+    handle <- openFile path ReadMode
+    code <- hGetContents handle
+    let program = fromRight [] $ parseBrainFuck code
+    evalProgram program
+    hClose handle
+
+mainHelp :: IO ()
+mainHelp = putStrLn $ unlines [
+        "Haskell Brainfuck interpreter/transpiler.",
+        "https://github.com/Washi1337",
+        "",
+        "  --interactive      Run in interactive mode.",
+        "  --eval             Evaluate a brainfuck script.",
+        "  --transpile        Transpile brainfuck program to C."
+    ]
+
+evalProgram :: BfProgram -> IO ()
+evalProgram program = do
     let tape = boundedTape tapeSize :: Tape Int
-    resultTape <- eval defaultIO tape (fromRight [] $ parseBrainFuck code)
-    putStr "\nResulting tape:"
+    resultTape <- eval defaultIO tape program
+    putStr "\nResulting tape: "
     putStrLn $ show $ contents $ resultTape
