@@ -3,8 +3,15 @@ module BfHs.Transpiler
     where 
 
 import BfHs.Language
-import Data.List
+    ( BfProgram, 
+      BfAstNode(..) )
 
+import Data.List 
+    ( intercalate )
+
+{-| 
+    Transpiles a brainfuck program to C.
+-}
 transpile :: BfProgram -> String
 transpile program = header ++ body ++ footer
     where 
@@ -29,12 +36,21 @@ transpile program = header ++ body ++ footer
 
         indent = (indentation 1) 
 
+{-| 
+    Generates the indentation string for the given indentation level.
+-}
 indentation :: Int -> String 
 indentation level = take (level*4) $ repeat ' '
 
+{-| 
+    Transpiles a brainfuck (sub)program to C.
+-}
 transpileProgram :: Int -> BfProgram -> String 
 transpileProgram level program = intercalate "\n" $ map (transpileNode level) program
 
+{-| 
+    Transpiles a single AST node in a brainfuck (sub)program to C.
+-}
 transpileNode :: Int -> BfAstNode -> String 
 transpileNode level node = case node of 
     MoveLeft -> (indentation level) ++ "idx--;"
